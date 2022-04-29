@@ -1,0 +1,104 @@
+#include "DisplayFunctions.h"
+#include<iostream>
+using namespace std;
+
+ 
+ void DisplayFunctions :: Menu()
+ {
+   cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;          
+   cout<<"=================================================================================================================="<<endl;
+   cout<<"                                                                                                              "<<endl;              
+   cout<<"   ######        ####          ####       #####     #####    #######   ######         ##      ##         ## "<<endl;
+   cout<<"   ##    ##    ##     ##     ##     ##    ##  ##   ##  ##   ##         ##    ##      ## ##      ##      ## "<<endl;          
+   cout<<"   ##     ##  ##       ##   ##       ##   ##   ## ##   ##    #####     ##     ##    ##   ##       ##  ## "<<endl;       
+   cout<<"   ##     ##  ##       ##   ##       ##   ##     #     ##         ##   ##     ##   #########        ##   "<<endl;             
+   cout<<"   ##    ##    ##     ##     ##     ##    ##           ##         ##   ##    ##   ##       ##       ##   "<<endl;             
+   cout<<"   ######        ####          ####       ##           ##    #####     ######    ##         ##      ##   "<<endl;
+   cout<<"                                                                                                         "<<endl;                
+   cout<<"=================================================================================================================="<<endl;
+   cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n"<<endl;          
+
+   cout<<"=================================================================================================================="<<endl;  
+   cout<<"                                            =============                                       "<<endl;                
+   cout<<"                                          ||     MENU    ||                                     "<<endl;           
+   cout<<"                                            =============                                       "<<endl;                
+   cout<<"=================================================================================================================="<<endl;  
+    string choice;
+  
+  do
+  {
+   cout<<"\n1.About Items"<<endl; 
+   cout<<"2.About Enemies"<<endl;
+   cout<<"3.Start Game"<<endl;
+   cout<<"\nEnter your Choice = ";   
+   cin>>choice;
+  
+
+  if(choice == "1")
+  {
+    DisplayFunctions::ItemsInfo();
+  }
+  else if ( choice == "2")
+  {
+    DisplayFunctions::EnemyInfo();
+  }
+  else if( choice == "3") 
+  {}
+  else 
+  {
+    cout<<"You Enter the Wrong Input"<<endl;
+  }
+
+  }while(choice != "3");
+ }
+
+ void DisplayFunctions::ItemsInfo()
+ {
+  cout<<"=================================================================================================================="<<endl;
+  cout<<"                                               1.Sword                                                            "<<endl; 
+  cout<<"   The weapon Sword will unlocked after Player complete Level 2.Using Sword you can perform 'Critical Hit' Speacial"<<endl;
+  cout<<" Ability and give critical damage to enemy.At Level 2 there is only 10% chance you can perform Critical Hit."<<endl;
+  cout<<"                                                                                                         "<<endl;                
+  cout<<"                                               2.Shield                                                           "<<endl; 
+  cout<<"  Using Shield you can Activate the Attack Blocker Ability of our player and block the received attack from the enemy"<<endl;
+  cout<<"Any critical attack from the enemy can be blocked with Shield"<<endl;
+  cout<<"                                                                                                         "<<endl;                
+  cout<<"                                               3.LifeSteal                                                           "<<endl; 
+  cout<<"  LifeSteal is most powerful ability of player. Using this our player can steal enemy's health by the amount of health"<<endl;
+  cout<<"is increased of player and also give extra damage to player"<<endl;
+  cout<<"                                                                                                         "<<endl;                
+  cout<<"                                               4.Ranged Attack                                                        "<<endl; 
+  cout<<"  Ranged Attack give the enemy average damage but most noticable thing about this Special Ability that you can skip the"<<endl;
+  cout<<"and perform the double attack withouth recieving the damage."<<endl;
+  cout<<"==================================================================================================================\n\n"<<endl;  
+ }
+
+
+ void DisplayFunctions::EnemyInfo()
+ {
+  cout<<"=================================================================================================================="<<endl;
+  cout<<"                                               1.Common Enemies"   <<endl;
+  cout<<"    These are the weakest enemies that you would have to kill.But as level increses the damage and the amount of "<<endl;
+  cout<<"enemies increases so you have to be careful with these.They randomly perform attack or attack blocker ability means"<<endl;
+  cout<<"they too can block player's attack with probability 10%"<<endl;
+  cout<<"\n                                                 2.Murlocs"<<endl;
+  cout<<"    Murlocs is the boss of all enemies.In last level you would face Murlocs if you survived through all levels."<<endl;
+  cout<<"Murlocs can give high dimage to player and he also heal and perform attack randomly.Murlocs have to special abilty"<<endl;
+  cout<<"of 'Health Regeneration' and 'Rocket Punch'.Using 'Health Regeneration' he can regenerte his health 3 time when his"<<endl;
+  cout<<"drop below 50.'Rocket Punch' is strongest ability of murlocs which could give player critical damage."<<endl;
+  cout<<"\n==================================================================================================================\n\n"<<endl;
+}
+
+
+void DisplayFunctions::StartingStory()
+{
+  cout<<"\n\n          Once in small village named 'Wellwood' the mysterious group appear.They start robbing peoples,looting"<<endl; 
+  cout<<"the stores torturing innocent peoples in village.They dont fear the cops and even threat cops if they would come in"<<endl;
+  cout<<"their way.Now it's on your hand to face the enemies.Murlocs is the boss of thier group and it is appear that he is"<<endl;
+  cout<<"strongest among all other enemies.To beat him you could unlocked the speacial items with each level passed using "<<endl;
+  cout<<" them you can perform the same special abilities in next also.\n"<<endl;
+  cout<<"                                               BEST OF LUCK PLAYER"<<endl;
+  cout<<"\n                                 Every Special Item Will Get unlocked at respective Level"<<endl;
+}
+
+

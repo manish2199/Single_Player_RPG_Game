@@ -1,0 +1,15 @@
+#pragma once 
+
+
+class DisplayFunctions
+{
+   public :
+
+    static void Menu();
+    
+    static void ItemsInfo();
+
+    static void EnemyInfo();
+
+    static void StartingStory();
+};
