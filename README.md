@@ -11,4 +11,4 @@ Single Player RPG battle game built using C++.
  4.Created 6 Levels in each level player get new weapon.
   
 # Gameplay Link
-  Link - https://replit.com/@ManishMistry1/Single-Player-Battle-Adventure-Game
+ Playable Link - https://replit.com/@ManishMistry1/Single-Player-Battle-Adventure-Game
