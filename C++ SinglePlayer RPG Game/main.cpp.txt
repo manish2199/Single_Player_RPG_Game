@@ -1,0 +1,37 @@
+#include "Levels.h"
+#include "DisplayFunctions.h"
+#include <iostream>
+using namespace std;
+   
+// All Required Static Variables   
+bool Player::isMapCollected = false;
+bool Player::is_swordCollected = false; 
+bool Player::is_shieldCollected = false;
+bool Player::is_lifeStealActivated = false;
+bool Player::is_BowCollected = false;
+bool Levels::player_Killed = false;
+
+
+int main() 
+{
+  // Function to show Menu
+  DisplayFunctions::Menu();                                               
+ 
+ 
+ // Game Starts
+  DisplayFunctions::StartingStory();
+    
+  Levels ::Level1();
+
+  Levels :: Level2();
+
+  Levels :: Level3();
+
+  Levels :: Level4();
+
+  Levels :: Level5();
+
+  Levels :: Level6();
+
+
+}

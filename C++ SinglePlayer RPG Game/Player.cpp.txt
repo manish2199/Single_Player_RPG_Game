@@ -1,0 +1,266 @@
+#include "Player.h"
+#include <iostream>
+using namespace std;
+
+
+// Take Damage from Enemies
+void Player::TakeDamage(int damage,Enemy enemy,EnemyType enm)
+{
+  if( health > 0 && enemy.getEnemyHealth() > 0)
+  {
+     blocked_damage = damage;
+     health = health - damage;
+     cout<<"                                          Hit by "<<enemy.getEnemyType(enm)<<" :( "<<endl;
+     cout<<"                                          Received Damage by "<<enemy.getEnemyType(enm)<<" is "<<damage<<endl;
+     if (health > 0 )
+     {
+     cout<<"                                          Health of Player is "<<health<<endl;
+     }
+     else
+     {
+   
+     }
+  }
+  
+}
+
+
+// Setters for essential variables
+int Player ::getHealth()
+{
+  return health;
+}
+
+int Player:: getMeleeDamage()
+{
+  return melee_attackDamage;
+}
+
+
+int Player:: getRangedDamage()                          // Get Random Ranged Attack 
+{
+  srand(time(NULL));
+  
+  int rangeDamage = ( 3 + rand() % 15);
+
+  return rangeDamage;
+  
+}
+
+
+
+// Speacial item bool setters and getters
+void Player::Set_isMapCollected(bool map)
+{
+  isMapCollected = map;
+}
+
+bool Player::get_isMapCollected()
+{
+  return isMapCollected;
+}
+
+void Player::Set_isSwordCollected(bool sw)
+{
+   is_swordCollected = sw;
+}
+
+bool Player::get_isSwordCollected()
+{
+  return is_swordCollected;
+}
+
+void  Player::Set_isShieldCollected(bool sh)
+{
+  is_shieldCollected = sh;
+}
+
+bool Player::get_isShieldCollected()
+{
+  return is_shieldCollected;
+}
+
+void Player::Set_islifeStealActivated(bool l)
+{
+  is_lifeStealActivated = l;
+}
+   
+bool Player::get_islifeStealActivated()
+{
+  return is_lifeStealActivated;  
+}
+
+void Player::Set_isBowCollected(bool r)
+{
+  is_BowCollected = r;
+}
+bool Player::get_isBowCollected()
+{
+  return is_BowCollected;
+}
+
+
+
+// Using Special Ability
+void Player::Critical_Hits(Enemy &enemy , int probability)
+{
+  if (get_isSwordCollected())
+  {
+    // Execute on based on Probability We Pass
+    srand(time(NULL));
+
+    int randProbability = 1 + rand() % 10;
+
+    if ( randProbability < probability)
+    {
+      if(enemy.getEnemyHealth() > 0 )
+      {
+      cout<<"                                     Giving Critical_Hit with Sword.......... "<<endl;
+        enemy.Take_Damage(Sword_Damage);
+      }
+      else 
+      {
+        cout<<"                             Enemy Already Killed"<<endl;
+      }
+
+    }   
+    else
+    {
+      cout<<"                               \nOps You Miss!!!!"<<endl;
+
+    }
+  }
+  else
+  {
+    cout<<"                                 \nYou havent Collected Sword Yet :( "<<endl;
+  }
+}
+
+
+
+void Player:: AttackBlocker(int probability,EnemyType enm,Enemy &enemy)
+{
+  if(get_isShieldCollected())
+  {
+    // Execute on based on Probability We Pass
+    srand(time(NULL));
+
+    int randProbability = 1 + rand() % 10;
+
+      if ( randProbability < probability)
+    {
+      if ( health > 0 )
+      {
+       health = (health + blocked_damage) - 10;
+       cout<<"\n                                  Hey Player you blocked the "<<enemy.getEnemyType(enm)<<" 's attack with Shield :)"<<endl;
+      //  if(getHealth() < 100)
+      //  {
+       cout<<"                                    Health of Player is now "<<health<<endl;
+      //  }
+       
+       blocked_damage = 0;
+      
+      }
+    }  
+    else 
+    {
+      cout<<"                                         \nOps You Miss!!!!"<<endl;
+    } 
+  }
+  else 
+  {
+    cout<<"                                      \nYou havent collected Shield Yet :( "<<endl;    
+  }
+  
+}
+
+
+
+void Player::LifeStealer(int prob,Enemy &enemy1 )
+{
+  if(get_islifeStealActivated())
+  {
+    
+    srand(time(NULL));                      // Execute on based on Probability We Pass
+
+    int randProbability = 1 + rand() % 10;
+
+      if ( randProbability < prob)
+    {
+      cout<<"                                         Activating Life Steal.......... "<<endl;
+      cout<<"Press Enter to attack ";
+      cin.ignore();
+      cin.ignore();
+      cout<<"\n";
+      if(enemy1.getEnemyHealth() > 0)
+      {
+        enemy1.Set_decreasedLife(15);
+        enemy1.Take_Damage(25);             //  Decreased the enemy health damage + increased health of player
+        enemy1.Set_decreasedLife(0);
+      }
+      if(health > 0 )
+      {
+        health = health + 15;
+        if(health > 100)                //  Increased the Health by 15
+        {
+          health = 100;
+        }
+       cout<<"\n\n                                        Increased Health of Player is "<<health;
+      }
+    }  
+    else
+    {
+      cout<<"                                   \nOps You Miss!!!!"<<endl;
+    } 
+  }
+  else 
+  {
+    cout<<"                                  \nLife Steal hasn't activated Yet :( "<<endl;    
+  }
+  
+}
+
+
+void Player::RangedAttack(int prob, Enemy &enemy1)
+{
+   if (get_isBowCollected())
+   {
+     // Execute on based on Probability We Pass
+     srand(time(NULL));
+
+     int randProbability = 1 + rand() % 10;
+
+    if (randProbability < prob)
+    {
+      if(enemy1.getEnemyHealth() > 0 )
+      {
+        srand(time(NULL));
+        
+        cout<<"                                    Ranged Attack Activating!!!!!! \n"<<endl;
+        enemy1.Take_Damage(getRangedDamage());        
+        cout<<"\nPress Enter to fire the arrows from Your Bow ";
+        cin.ignore();
+        cin.ignore();
+        if (enemy1.getEnemyHealth()>0)
+        {
+          enemy1.Take_Damage(getRangedDamage());
+        }
+        else 
+        {
+        cout<<"                               Enemy Already Killed"<<endl;
+        }
+      }      
+    } 
+    else
+    {
+      cout<<"                                   \nOps You Miss!!!!"<<endl;
+    }  
+  }
+  else
+  {
+    cout<<"                                  \nYou haven't collected Bow Yet :( "<<endl;    
+  }
+}
+
+
+  

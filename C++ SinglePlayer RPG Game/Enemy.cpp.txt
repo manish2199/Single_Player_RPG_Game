@@ -1,0 +1,126 @@
+#include "Enemy.h"
+#include <iostream>
+using namespace std;
+
+
+Enemy::Enemy(int hl , int b_d)
+ {
+   health = hl ; 
+   base_damage = b_d;
+ }
+
+
+ 
+ void  Enemy::Take_Damage(int damage)                      // Taking Damage From Player 
+{
+   if(health > 0 )
+   {
+
+     health = health - (damage + life_decreased) ;
+     attacked_damage = damage;
+     is_PlayerAttacked = true;
+     
+     // Health Stats of Enemy
+     cout<<"\n                                         Enemy recived "<<damage<<" damage"<<endl;
+     
+     // Show Ciritcal Damage
+     if(damage > 30)
+     {
+       cout<<"                                         Critical Damage to enemy Well Done Player :) "<<endl;
+     }
+
+     // Make Sure Printing health only when alive
+     if(health > 0)
+     {
+     cout<<"                                         Health of enemy is now "<<health<<endl;
+     }
+     else 
+     {
+       cout<<"                                         Health of enemy is 0 "<<endl;
+       cout<<"                                         Enemy is Killed :)"<<endl;
+     }
+    }
+   
+
+}
+
+
+
+ void Enemy::Block_Attack(EnemyType enm_T)               // Blocking Player Attack 
+ {
+    if ( health > 0 )
+    {
+    health = health + attacked_damage;
+    cout<<"                                           Hey Player your attack is blocked by "<<getEnemyType(enm_T)<<" :("<<endl;
+     if(health >= 100)
+     {
+       health = 100;
+     }
+      cout<<"                                           Health of "<<getEnemyType(enm_T)<<" is now "<<health<<endl;
+    attacked_damage = 0;
+    }
+ }
+
+
+  
+  // Getters And Setters
+  int Enemy::getBaseDamage()
+  {
+    return base_damage;
+  }
+
+ int Enemy::getAttackedDamage() 
+ {
+   return attacked_damage;
+ }
+
+ int Enemy:: get_LifeDecreased()
+ {
+   return life_decreased;
+ }
+ 
+ void Enemy::Set_decreasedLife(int life)
+ {
+   life_decreased = life;
+ }
+
+bool Enemy::get_isPlayerAttack()
+{
+  return is_PlayerAttacked;
+}
+
+int Enemy::getEnemyHealth()
+{
+  return health;
+}
+
+
+string Enemy::getEnemyType(EnemyType en)
+{
+  switch(en)
+  {
+    case CommonEnemy :
+   {
+      return "Enemy";
+      break;
+   }
+    case Murlocs_Type :
+    {
+     return "Murlocs";
+     break;  
+    }
+  }
+}   
+
+
+
+
+
+
+
+
+
+
+
+
+  

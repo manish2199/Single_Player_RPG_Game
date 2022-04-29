@@ -1,0 +1,45 @@
+#pragma once
+#include "EnemyInterface.h"
+#include "Enemy.h"
+#include "Player.h"
+#include "Murlocs.h"
+
+
+
+class Levels
+{
+  public :
+
+  // Enemy Killed Player 
+  static bool player_Killed;
+
+  // Function for Enemy's Turn for attack or defence 
+  static void EnemyAttack(Enemy enemy , Player player);
+
+  // Function for Murlocs(Boss) Attack
+  static void MurlocAttack(Murlocs mur, Player &player); 
+
+  //  Battle Between Player And Enemy
+  static void Player_EnemyBattle(Player player,Enemy enemyArr[],int maxEnemy,int prob);
+
+  // Check For Winner
+  static void Winner(Player player, Enemy enemy , int lev);
+
+   
+
+   
+   // Levels of Game 
+   
+    static void Level1();
+
+    static void Level2();
+ 
+    static void Level3();
+
+    static void Level4();
+
+    static void Level5();
+
+    static void Level6();
+    
+};

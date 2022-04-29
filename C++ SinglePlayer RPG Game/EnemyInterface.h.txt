@@ -1,0 +1,24 @@
+#pragma once 
+#include <string>
+
+
+
+class EnemyInterface
+{
+  public :
+    
+    // Taking damage from player 
+    virtual void Take_Damage(int damage) = 0;
+
+    virtual bool get_isPlayerAttack()= 0;
+
+    virtual void Set_decreasedLife(int life)= 0;
+    virtual int get_LifeDecreased()= 0;
+    
+    virtual int getEnemyHealth()= 0;
+
+    virtual int getBaseDamage()= 0;
+
+    virtual int getAttackedDamage()= 0;
+    
+};

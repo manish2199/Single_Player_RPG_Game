@@ -1,0 +1,24 @@
+#pragma once
+#include "Player.h"
+
+
+
+class Murlocs : public Enemy
+{
+  private : 
+   int regenrable_Health = 15;
+   int rocket_PunchDamage = 35;
+   int noOfTime = 3;
+  
+
+  public :
+   
+   Murlocs(int health , int base_damage );
+
+   // Take Damage For Murlocs
+   virtual void Take_Damage(int damage);
+
+   // Murlocs Special Abilities      
+   void RocketPunch(Player &player , Murlocs mur);
+  
+};

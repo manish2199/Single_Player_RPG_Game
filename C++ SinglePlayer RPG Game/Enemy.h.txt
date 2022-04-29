@@ -1,0 +1,50 @@
+#pragma once
+#include <string>
+using namespace std;
+
+enum EnemyType
+{
+  CommonEnemy,
+  Murlocs_Type
+};
+
+
+class Enemy 
+{
+  protected :
+   int health;
+   int base_damage;
+   int attacked_damage;
+   int life_decreased = 0;
+   bool is_PlayerAttacked;
+  
+  public :
+   
+    // Setting Variables
+    Enemy(int hl , int b_d);
+    
+    
+    // Getters and setters
+    bool get_isPlayerAttack();
+
+    void Set_decreasedLife(int life);
+    int get_LifeDecreased();
+    
+    int getEnemyHealth();
+
+    int getBaseDamage();
+
+    int getAttackedDamage();
+
+    string getEnemyType(EnemyType en);  
+
+
+    // Taking damage from player 
+    virtual void Take_Damage(int damage);
+
+    // Block The Attack From Enemy 
+    void Block_Attack(EnemyType enm_T);
+
+
+  
+};

@@ -1,0 +1,57 @@
+#pragma once
+#include "Enemy.h"
+
+class Player 
+{
+  private:
+    int health = 100;
+    int melee_attackDamage = 20;
+    int Sword_Damage = 35;
+    int blocked_damage;    
+
+    // Special Item bool variables
+    static bool isMapCollected;
+    static bool is_swordCollected;
+    static bool is_shieldCollected;
+    static bool is_lifeStealActivated;
+    static bool is_BowCollected;
+  
+
+  public :
+   
+   // First Level Item = Map(item)
+   void Set_isMapCollected(bool map);
+   bool get_isMapCollected(); 
+   void Show_Map();
+
+   // Second Level Item = Sword
+   void Set_isSwordCollected(bool sw);
+   bool get_isSwordCollected(); 
+   void Critical_Hits(Enemy &enemy , int probability);
+
+   // Third Level Item = Shield 
+   void Set_isShieldCollected(bool sh);
+   bool get_isShieldCollected();
+   void AttackBlocker(int probability,EnemyType enm,Enemy &enemy);
+
+
+   // Fourth Level Item = Life Steal
+   void Set_islifeStealActivated(bool l);
+   bool get_islifeStealActivated();
+   void LifeStealer(int prob , Enemy &enemy);
+   
+
+   // Fifth Level Item = Ranged Attack
+   void Set_isBowCollected(bool r);
+   bool get_isBowCollected();
+   void RangedAttack(int prop , Enemy &enemy1);
+
+   // Take damage from enemy    
+   void TakeDamage(int damage,Enemy enemy,EnemyType enm);
+   
+   // Essential getters and setters
+   int getHealth();
+   int getMeleeDamage();
+   int getRangedDamage();
+
+};

@@ -1,0 +1,438 @@
+#include "Levels.h"
+#include "DisplayFunctions.h"
+#include <iostream>
+using namespace std;
+
+// Function for Enemy's Turn for attack or defence 
+  void Levels :: EnemyAttack(Enemy enemy , Player player)
+  {
+     if ( enemy.getEnemyHealth()>0 )
+    { 
+     cout<<"\n\nBe ready now it is Enemy's turn........\n\n"<<endl;
+     // 90% chance to attack or 10% chance to block player's attack
+
+     srand(time(NULL));
+     int randno =  1+(rand() % 2);
+  
+     if(randno == 1)
+     {
+       srand(time(NULL));
+       int randnoD = (1+(rand() % enemy.getBaseDamage())) + 9;
+       player.TakeDamage(randnoD,enemy,CommonEnemy);                               // Player recieving Damage  
+     }
+     else if (randno == 2)
+     { 
+      if(enemy.get_isPlayerAttack())
+      {
+       enemy.Block_Attack(CommonEnemy);
+      }
+      else 
+      {
+        cout<<"Enemy Failed to Attack "<<endl;
+      }
+     }
+    
+    }
+   cout<<"\n\n=================================================================================================================="<<endl;         
+  }
+
+
+  // Function for Murlocs(Boss) Attack
+ void Levels::MurlocAttack(Murlocs mur, Player &player)
+ {
+   if(mur.getEnemyHealth() > 0)
+   {
+     cout<<"\n                                       Murlocs is Ready to attack................"<<endl;
+     srand(time(NULL));
+     int randno =  1+(rand() % 3);
+  
+     if ( randno == 1)
+     { cout<<"\n                                         Murloc is performing base attack"<<endl;
+       player.TakeDamage(mur.getBaseDamage(),mur,Murlocs_Type);  
+     }
+     else if ( randno == 2)
+     {
+       srand(time(NULL));
+       int randBlock =  1+(rand() % 3);
+       if(randBlock<=2)
+       {
+         mur.Block_Attack(Murlocs_Type);
+       }
+       else
+       {
+         cout<<"                                    Murlocs trying to block attack but failed"<<endl;
+       }
+     }
+     else if ( randno == 3)
+     {
+       mur.RocketPunch(player,mur);
+     }
+     
+   }
+ }
+
+
+ // Battle Function Between Player And Enemy
+ void Levels:: Player_EnemyBattle(Player player,Enemy enemyArr[],int maxEnemy,int prob)
+ { 
+  int count = 0;
+  string ch;
+  
+  // Start:
+  // Battle until one of three dies
+do{
+  while(player.getHealth()>0 && enemyArr[count].getEnemyHealth()>0 )
+  {
+   do
+  {
+    // Taking Input from player  
+   cout<<"\nEnter your attack from below ";           cout<<"                              Collecteable Stats"<<endl;
+   cout<<"1.Melee Attack   = 'D'.";                       cout<<"                           ====================================="<<endl;
+   cout<<"2.Critical Hit   = 'W'. ";                      cout<<"                        ||"<<"         Sword =";(player.get_isSwordCollected())?cout<<" Collected  ":cout<<" UnCollected";cout<<"         ||"<<endl; 
+   cout<<"3.Attack Blocker = 'S'. ";                      cout<<"                        ||"<<"         Shield =";(player.get_isShieldCollected())?cout<<" Collected  ":cout<<" UnCollected";cout<<"        ||"<<endl; 
+   cout<<"4.Life Stealer  = 'L'.  ";                      cout<<"                        ||"<<"         LifeSteal =";(player.get_islifeStealActivated())?cout<<" Activated    ":cout<<" Not Activated";cout<<"   ||"<<endl; 
+   cout<<"5.Range Attack  = 'R'.  ";                      cout<<"                        ||"<<"         Bow =";(player.get_isBowCollected())?cout<<" Collected  ":cout<<" UnCollected";cout<<"           ||"<<endl; 
+   cout<<"                                                  ====================================="<<endl; 
+   cin>>ch;
+  }while( (ch != "D" && ch !="W" && ch != "S" && ch !="L" && ch !="R") );
+
+  if(ch == "D")
+  {
+     enemyArr[count].Take_Damage((player.getMeleeDamage() ) + 8); 
+  }
+  else if ( ch == "W")
+  {
+    Enemy &enemyRef1 = enemyArr[count];
+     player.Critical_Hits(enemyRef1,prob);
+  }
+  else if ( ch == "S")
+  {
+    Enemy &enemyRef2 = enemyArr[count];
+     player.AttackBlocker(prob,CommonEnemy,enemyRef2);
+  }
+  else if( ch == "L")
+  {
+    Enemy &enemyRef = enemyArr[count];
+    player.LifeStealer(prob,enemyRef);
+  }
+  else if ( ch == "R")
+  {
+    Enemy &enmRef = enemyArr[count];
+    player.RangedAttack(prob,enmRef);
+  }
+
+  // Now Enemy's turn to attack 
+  // Random Attack or Block Attack generate instruction
+  if (enemyArr[count].getEnemyHealth() > 0  )
+  {
+    if ( ( (ch == "W" && player.get_isSwordCollected()) || ( ch == "S" && player.get_isShieldCollected()) || ( ch == "L" && player.get_islifeStealActivated()) || ( ch == "R" && player.get_isBowCollected()) ) || ch == "D")
+    {
+     Levels::EnemyAttack(enemyArr[count],player);       
+    }
+  }
+  }
+   count++;
+   cout<<"\n\n                                          Your enemy "<<count<<" is killed"<<endl; 
+}while(count <= maxEnemy);
+}
+
+
+
+
+
+ // Check For Winner
+ void Levels::Winner(Player player , Enemy enemy , int lev)
+ {
+   if ( player.getHealth() < 0 )
+ {
+ cout<<"Enemy Killed You :( "<<endl;
+ cout<<"                                                       GAME OVER "<<endl;
+ Levels::player_Killed = true;
+ }
+ else if ( enemy.getEnemyHealth() < 0)
+  { 
+   cout<<"Congratulation You Clear Level "<<lev<<" and killed   Enemies :)\n\n";
+  }
+ }
+
+
+
+
+
+void Levels :: Level1()
+{
+  /// Story Above
+  cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     LEVEL 01"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+
+  cout<<"\n                                 Press the respective key for each type of attack to enemy"<<endl;
+  Player player1;
+  Enemy enemy1(100,10);
+  Enemy &en = enemy1;
+  Enemy enemyArray[] = { en };
+  string ch;  
+   
+  // Battle until one of two dies
+   Levels::Player_EnemyBattle(player1,enemyArray,0,6);
+
+  // Check For Winner
+   Levels::Winner(player1,enemy1,1);
+  
+  if (!Levels::player_Killed)
+  {
+  //Unlock Map Item
+  cout<<"                  You have Unlock Map By Pressing 'M' you can see the Map info          "<<endl;
+  player1.Set_isMapCollected(true);
+  }
+}
+
+
+void Levels:: Level2()
+{
+   if ( !Levels::player_Killed)
+   {
+  cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     LEVEL 02"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+     // Story For Second Level 
+   cout<<"\n\n Now You have Entered In Level 2\n\n"<<endl;
+   cout<<"You have Ability of 'Critical Hit' in this level"<<endl;
+   cout<<"If you kill both two enemies you will granted Sword"<<endl;
+   cout<<"Which will help you to face enemies that will come to your journey."<<endl;
+   cout<<"In this level you have to kill 2 enemies "<<endl;
+   cout<<"By pressing 'W' you can perform Critical Hit using Sword and Sword will be Unlock for you at end of level"<<endl;
+  Player player2;
+  Enemy enemy1(100,15);
+  Enemy &en1 = enemy1;
+  Enemy enemy2(100,10);
+  Enemy &en2 = enemy2; 
+  player2.Set_isSwordCollected(true);
+  Enemy  enemyArray[] = { en1 , en2  };
+
+
+ // Battle Between Player And Enemy 
+ Levels::Player_EnemyBattle(player2,enemyArray,1,6);
+ 
+ // Check For Winner
+ Levels::Winner(player2,enemy2,2);
+ 
+ if(!Levels::player_Killed)
+ {
+  cout<<"                  You have Collected Sword By Pressing 'W' you can attack enemy with Sword          "<<endl;  
+ }
+  
+  
+ }
+}
+
+
+void Levels :: Level3()
+{
+  if ( !Levels::player_Killed)
+  {
+  cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     LEVEL 03"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+   // Story For Third Level 
+   cout<<"\n\n Now You have Entered In Level 3\n\n"<<endl;
+   cout<<"You have Ability of 'Attack Blocked' in this level"<<endl;
+   cout<<"If you kill all three enemies you will granted Sheild"<<endl;
+   cout<<"Which will help you to face enemies that will come to your journey."<<endl;
+   cout<<"In this level you have to kill 3 enemies "<<endl;
+   cout<<"By pressing 'S' you can perform Attack Blocker\n"<<endl;
+   
+  Player player3;
+  Enemy enemy1(100,20);
+  Enemy &en1 = enemy1;
+  Enemy enemy2(100,20);
+  Enemy &en2 = enemy2;
+  Enemy enemy3(100,20);
+  Enemy &en3 = enemy3; 
+  player3.Set_isShieldCollected(true);
+  Enemy enemyArray[] = { en1 , en2 , en3 };
+
+ // Battle Between Player And Enemy 
+ Levels::Player_EnemyBattle(player3,enemyArray,2,6);
+ 
+ // Check For Winner
+ Levels::Winner(player3,enemy3,3);
+ 
+ if (!Levels::player_Killed)
+  {
+   cout<<"                  You have Collected Sheild By Pressing 'S' you can block attack with Shield          "<<endl;  
+  }
+   
+  
+ }
+}
+
+
+void Levels :: Level4()
+{
+  if ( !Levels::player_Killed)
+  {
+   cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     LEVEL 04"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+    // Story For Fourth Level 
+   cout<<"\n\n Now You have Entered In Level 4\n\n"<<endl;
+   cout<<"You have Ability of 'Life Steal' in this level"<<endl;
+   cout<<"If you kill all four enemies you will granted LifeSteal"<<endl;
+   cout<<"Which will help you to face enemies that will come to your journey."<<endl;
+   cout<<"In this level you have to kill 4 enemies "<<endl;
+   cout<<"By pressing 'L' you can activate perform LifeSteal ."<<endl;
+
+  Player player4;
+  Enemy enemy1(100,22);
+  Enemy &en1 = enemy1;
+  Enemy enemy2(100,22);
+  Enemy &en2 = enemy2;
+  Enemy enemy3(100,22);
+  Enemy &en3 = enemy3;
+  Enemy enemy4(100,22);
+  Enemy &en4 = enemy4; 
+  player4.Set_islifeStealActivated(true);  
+  Enemy enemyArray[] = { en1 , en2 , en3 , en4 };
+
+  // Battle Between Player And Enemy 
+ 
+ Levels::Player_EnemyBattle(player4,enemyArray,3,6);
+ 
+ // Check For Winner
+  Levels::Winner(player4,enemy4,4); 
+  if(!Levels::player_Killed)
+  {
+  cout<<"                  You have Unlock LifeStealer By Pressing 'S' your health increase after giving attack      "<<endl;
+  }
+ }
+}
+
+
+ 
+void Levels:: Level5()
+{
+  if ( !Levels::player_Killed)
+  {
+    cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     LEVEL 05"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+    // Story For Fifth Level 
+   cout<<"\n\n Now You have Entered In Level 5\n\n"<<endl;
+   cout<<"You have Ability of 'Ranged Attack' in this level"<<endl;
+   cout<<"If you kill all four enemies you will granted Bow"<<endl;
+   cout<<"Which will help you to face enemies that will come to your journey."<<endl;
+   cout<<"In this level you have to kill 4 enemies "<<endl;
+   cout<<"By pressing 'R' you can perform Ranged Attack\n"<<endl; 
+
+  Player player5;
+  Enemy enemy1(100,22);
+  Enemy &en1 = enemy1;
+  Enemy enemy2(100,22);
+  Enemy &en2 = enemy2;
+  Enemy enemy3(100,22);
+  Enemy &en3 = enemy3;
+  Enemy enemy4(100,22);
+  Enemy &en4 = enemy4;
+  player5.Set_isBowCollected(true);
+  Enemy enemyArray[] = { en1 , en2 , en3 , en4 };
+
+  // Battle Between Player And Enemy 
+ Levels lev5;
+ Levels::Player_EnemyBattle(player5,enemyArray,3,6);
+ 
+ // Check For Winner
+  Levels::Winner(player5,enemy4,4); 
+  if(!Levels::player_Killed)
+  {
+  cout<<"                  You have Collected Bow By Pressing 'R' player can perform ranged attack      "<<endl;
+  }
+ }
+ 
+}
+
+
+
+void Levels::Level6()
+{
+  if (!Levels:: player_Killed)
+  {
+  // Story for final boss fight 
+  cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     FINAL LEVEL"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+
+    string ch;
+    Player player6;
+    Player &pl = player6; 
+    Murlocs murlocs(100, 25);
+    // Levels :EnemyAttack(murlocs,player6);
+    // Enemy &en4 = murlocs;
+    // Enemy enemyArray[] = {en4 };
+
+    cout<<"\n\n                                 Player you have collected all collectable Weapons"<<endl;
+    cout<<"                                  You can use those weapons in your battle with Murlocs"<<endl;
+    
+
+    
+    
+  // // Battle until one of three dies
+  while(pl.getHealth()>0 && murlocs.getEnemyHealth()>0 )
+  {
+    // Taking Input from player
+   do
+  {
+   cout<<"\nEnter your attack from below "<<endl;
+   cout<<"1.Melee Attack = 'D'."<<endl;
+   cout<<"2.Sword        = 'W'."<<endl;
+   cout<<"3.Shield       = 'S'."<<endl;
+   cout<<"4.LifeSteal    = 'L'"<<endl;
+   cout<<"5.Range Attack = 'R'"<<endl;
+   cin>>ch;
+  }while(ch != "D" && ch !="W" && ch != "S" && ch !="L" && ch !="R" );
+
+  if(ch == "D")
+  {
+     murlocs.Take_Damage((pl.getMeleeDamage() ) + 8); 
+     
+  }
+  else if ( ch == "W")
+  {
+     pl.Critical_Hits(murlocs,7);
+  }
+  else if ( ch == "S")
+  {
+     pl.AttackBlocker(4,Murlocs_Type,murlocs);
+  }
+  else if( ch == "L")
+  {
+    pl.LifeStealer(7,murlocs);
+  }
+  else if ( ch == "R")
+  {
+    pl.RangedAttack(7,murlocs);
+  }
+
+  // Now Enemy's turn to attack 
+  // Random Attack or Block Attack generate instruction
+  Levels::MurlocAttack(murlocs,pl);
+
+  }
+
+  if ( pl.getHealth() < 0 )
+ {
+ cout<<"Murlocs Killed You :( "<<endl;
+ cout<<"                                                       GAME OVER "<<endl;
+ }
+ else if ( murlocs.getEnemyHealth() < 0)
+  { 
+   cout<<"\n                            Congratulation You Clear Level Last Level and killed Enemies's boss Murlocs :)\n\n";
+  cout<<"\n\n=================================================================================================================="<<endl;
+  cout<<"                                                     GAME OVER"<<endl;  
+  cout<<"=================================================================================================================="<<endl;
+  } 
+ }
+}
+
+
+
